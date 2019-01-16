@@ -1,0 +1,93 @@
+{{define "contents/contents.html"}}
+{{template "layouts/_header.html"}}
+<div class="ui large menu stackable">
+    <a class="item">
+        全部内容
+    </a>
+    <a class="item">
+        敏感内容
+    </a>
+    <div class="right menu">
+        <div class="ui dropdown item" tabindex="0">
+            平台选择 <i class="dropdown icon"></i>
+            <div class="menu transition hidden" tabindex="-1">
+                <a class="item">Twitter</a>
+                <a class="item">FaceBook</a>
+            </div>
+        </div>
+        <div class="item hiddenui">
+            <div class="ui teal button" data-tooltip="通过当前关键词库，重新标记敏感内容" data-position="bottom right" data-inverted="">
+                重新扫描内容
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui segments">
+    <div class="ui segment">
+        <h3 class="ui header">全部内容</h3>
+    </div>
+    <div class="ui segment">
+        <div class="ui feed timeline">
+            {{range .}}
+                <div class="event">
+                    <div class="label avatar">
+                        {{if .Account.Avatar}}
+                            <img src="{{.Account.Avatar}}" alt="{{.Account.Username}}"/>
+                        {{else}}
+                            <img src="https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png"
+                                 alt="{{.Account.Username}}"/>
+                        {{end}}
+                    </div>
+                    <div class="content">
+                        <div class="summary">
+                            <i>from</i> Twitter
+                            <a class="user" href="https://twitter.com/{{.Account.Account}}" target="_blank">
+                                {{if .Account.Username}}
+                                    {{.Account.Username}}
+                                {{else}}
+                                    {{.Account.Account}}
+                                {{end}}
+                            </a>
+                            <div class="date">
+                                {{.Account.Summary}}
+                            </div>
+                        </div>
+                        <div class="extra text">
+                            {{.Content}}
+                        </div>
+                        <div class="meta">
+                            <a class="like">
+                                <i class="time icon"></i> {{.CreatedAt}}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {{end}}
+        </div>
+    </div>
+</div>
+
+<style>
+    .avatar {
+        width: 2.9em !important;
+    }
+
+    .avatar img {
+        min-width: 100%;
+        min-height: 2.9em;
+        background: #307473;
+        border: 2px solid #307473;
+    }
+
+    .content .extra.text {
+        font-size: 14px !important;
+    }
+
+    .summary i {
+        color: #999;
+        font-weight: normal;
+    }
+</style>
+{{template "layouts/_footer.html"}}
+{{end}}

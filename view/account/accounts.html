@@ -1,0 +1,91 @@
+{{define "account/accounts.html"}}
+{{template "_header.html"}}
+<div class="ui large menu stackable">
+    <a class="item">
+        全部帐号
+    </a>
+    <a class="item">
+        失效帐号
+    </a>
+    <div class="right menu">
+        <div class="ui dropdown item" tabindex="0">
+            平台选择 <i class="dropdown icon"></i>
+            <div class="menu transition hidden" tabindex="-1">
+                <a class="item">Twitter</a>
+                <a class="item">FaceBook</a>
+            </div>
+        </div>
+        <div class="item hiddenui">
+            <div class="ui teal button J_add_account">
+                添加新帐号
+            </div>
+        </div>
+    </div>
+</div>
+
+<table id="data_table" class="ui compact selectable striped celled table tablet stackable" cellspacing="0"
+       width="100%">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>平台</th>
+        <th>帐号</th>
+        <th>昵称/签名</th>
+        <th>抓取<br/>条数</th>
+        <th>敏感<br/>内容</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{range .}}
+        <tr onclick="window.open('https://twitter.com/{{.Account}}');" style="cursor:pointer;">
+            <td>{{.ID}}</td>
+            <td>{{.Site}}</td>
+            <td>
+                {{if .Avatar}}
+                    <div><img src="{{.Avatar}}" class="ui avatar image"/></div>
+                {{end}}
+                {{.Account}}
+            </td>
+            <td>
+                {{.Username}}
+                {{if .Summary}}
+                    <div style="color:#888;font-size:12px;">{{.Summary}}</div>
+                {{end}}
+            </td>
+            <td>{{.Counts}}</td>
+            <td>{{.Review}}</td>
+            <td></td>
+        </tr>
+    {{end}}
+    </tbody>
+</table>
+
+<script>
+    $(function () {
+        $('.J_add_account').on('click', function () {
+            swal({
+                title: '添加监测帐号',
+                html:
+                    '<div class="ui form">' +
+                    '   <div class="inline fields">' +
+                    '      <div class="field">' +
+                    '          <div class="ui radio checkbox"><input type="radio" name="twitter" checked="checked" class="hidden"><label>Twitter</label></div>' +
+                    '      </div>' +
+                    '      <div class="field">' +
+                    '          <div class="ui radio checkbox disabled"><input type="radio" name="twitter" class="hidden"><label>FaceBook</label></div>' +
+                    '       </div>' +
+                    '   </div>' +
+                    '   <div class="field"><textarea placeholder="请添加帐号，每行一个，仅输入帐号即可"></textarea></div>' +
+                    '</div>',
+                showCloseButton: false,
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText: '添加',
+                cancelButtonText: '取消',
+            })
+        });
+    });
+</script>
+{{template "_footer.html"}}
+{{end}}

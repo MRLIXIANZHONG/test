@@ -1,0 +1,121 @@
+{{define "user/create.html"}}
+{{template "layouts/_header.html"}}
+<div class="ui large menu stackable">
+    <a class="item">
+        全部内容
+    </a>
+    <a class="item">
+        敏感内容
+    </a>
+    <div class="right menu">
+        <div class="ui dropdown item" tabindex="0">
+            平台选择 <i class="dropdown icon"></i>
+            <div class="menu transition hidden" tabindex="-1">
+                <a class="item">Twitter</a>
+                <a class="item">FaceBook</a>
+            </div>
+        </div>
+        <div class="item hiddenui">
+            <div class="ui teal button" data-tooltip="通过当前关键词库，重新标记敏感内容" data-position="bottom right" data-inverted="">
+                重新扫描内容
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui segments">
+    <div class="ui segment">
+        <h3 class="ui header">添加会员</h3>
+    </div>
+    <div class="ui segment">
+        <div class="ui feed timeline">
+
+                <form class="ui large form">
+                    <div class="ui stacked segment">
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="user icon"></i>
+                                <input type="text" name="mobile" placeholder="手机号">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" name="password" placeholder="密码">
+                            </div>
+                        </div>
+                        <div class="ui fluid large teal submit button">添加会员</div>
+                    </div>
+                    <div class="ui error message"></div>
+                </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.ui.form').form({
+            fields: {
+                mobile: {
+                    identifier: 'mobile',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: '请输入手机号'
+                        }
+                    ]
+                },
+                password: {
+                    identifier: 'password',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: '请输入登录密码'
+                        }
+                    ]
+                }
+            },
+            inline: true,
+        });
+    }).on('submit', function (e) {
+        e.preventDefault();
+        $.post('/admin/createuser', {
+            mobile: $('input[name="mobile"]').val(),
+            password: $('input[name="password"]').val()
+        }, function (ret) {
+            if (ret.code !== 200) {
+                swal('抱歉', ret.msg, 'error');
+                return;
+            }else {
+                swal('添加成功');
+                return;
+            }
+            location.reload();
+        });
+    });
+</script>
+
+<style>
+    .avatar {
+        width: 2.9em !important;
+    }
+
+    .avatar img {
+        min-width: 100%;
+        min-height: 2.9em;
+        background: #307473;
+        border: 2px solid #307473;
+    }
+
+    .content .extra.text {
+        font-size: 14px !important;
+    }
+
+    .summary i {
+        color: #999;
+        font-weight: normal;
+    }
+</style>
+{{template "layouts/_footer.html"}}
+{{end}}
